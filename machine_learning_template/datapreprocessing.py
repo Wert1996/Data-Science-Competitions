@@ -52,12 +52,14 @@ def label_encoding(X, list_indices=None):
 
 
 def oneHotEncoding(X, list_indices):
+    """Also takes care of redundant variables
+    Removes one column of dummy variable and returns the new matrix"""
     print('Onehotencoding..')
     X = X.astype(float)
     for i in list_indices:
-        onehotencoder = OneHotEncoder(categorical_features=i)
+        onehotencoder = OneHotEncoder(categorical_features=[i])
         X = onehotencoder.fit_transform(X)
-    return X
+    return X[1:]
 
 
 def encode(X, list_indices=None):
@@ -71,9 +73,11 @@ def encode(X, list_indices=None):
         label_encoder = LabelEncoder()
         X[:, i] = label_encoder.fit_transform(X[:, i])
     print('Onehotencoding..')
+    list_indices = [i - X.shape[1] for i in list_indices]
     for i in list_indices:
         onehotencoder = OneHotEncoder(categorical_features=[i])
         X = onehotencoder.fit_transform(X).toarray()
+        X = X[:, 1:]
     return X
 
 
