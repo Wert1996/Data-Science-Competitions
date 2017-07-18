@@ -4,15 +4,47 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.cross_validation import train_test_split
 
 
-def impute(X, list_indices):
+import pandas as pd
+import numpy as np
+
+from sklearn.base import TransformerMixin
+
+
+class DataFrameImputer(TransformerMixin):
+
+    def __init__(self):
+        """Impute missing values.
+
+        Columns of dtype object are imputed with the most frequent value
+        in column.
+
+        Columns of other types are imputed with mean of column.
+
+        """
+
+    def fit(self, X, y=None):
+        self.fill = pd.Series([X[c].value_counts().index[0]
+            if X[c].dtype == np.dtype('O') else X[c].mean() for c in X],
+            index=X.columns)
+        return self
+
+    def transform(self, X, y=None):
+        return X.fillna(self.fill)
+
+
+def impute(X):
     print('Providing missing values..')
-    imputer = Imputer(missing_values='NaN', strategy='mean', axis=0)
-    X[:, list_indices] = imputer.fit_transform(X[:, list_indices])
+    X = DataFrameImputer().fit_transform(X)
     return X
 
 
-def label_encoding(X, list_indices):
+def label_encoding(X, list_indices=None):
     print('Encoding with label..')
+    if list_indices is None:
+        list_indices = []
+        for i in range(X.shape[1]):
+            if isinstance(X[0][i], str):
+                list_indices.append(i)
     for i in list_indices:
         label_encoder = LabelEncoder()
         X[:, i] = label_encoder.fit_transform(X[:, i])
@@ -28,10 +60,27 @@ def oneHotEncoding(X, list_indices):
     return X
 
 
-def split_data_into_train_and_test(X, ratio):
+def encode(X, list_indices=None):
+    print('Encoding with label..')
+    if list_indices is None:
+        list_indices = []
+        for i in range(X.shape[1]):
+            if isinstance(X[0][i], str):
+                list_indices.append(i)
+    for i in list_indices:
+        label_encoder = LabelEncoder()
+        X[:, i] = label_encoder.fit_transform(X[:, i])
+    print('Onehotencoding..')
+    for i in list_indices:
+        onehotencoder = OneHotEncoder(categorical_features=[i])
+        X = onehotencoder.fit_transform(X).toarray()
+    return X
+
+
+def split_data_into_train_and_test(X, y, ratio):
     print('Splitting data')
-    X_train, X_test = train_test_split(X, test_size=ratio, random_state=0)
-    return X_train, X_test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=ratio, random_state=0)
+    return X_train, X_test, y_train, y_test
 
 
 def scaling(X):
