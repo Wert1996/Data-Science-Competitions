@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9b190bc5-0d11-4601-897e-84e4e71dce26" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/house_prices.ipynb" afterPath="$PROJECT_DIR$/house_prices.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/machine_learning_template/DimensionalityReduction.py" afterPath="$PROJECT_DIR$/machine_learning_template/DimensionalityReduction.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/machine_learning_template/Regression_methods.py" afterPath="$PROJECT_DIR$/machine_learning_template/Regression_methods.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
