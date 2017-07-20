@@ -57,11 +57,13 @@ def random_forest_classification(X, y, X_test, trees=10):
 
 # For classification using artificial neural network
 def ann_classify(input_dim, hidden, output_dim, X_train, y_train, X_test):
+    from keras.models import Sequential
+    from keras.layers import Dense
     model = Sequential()
     model.add(Dense(output_dim=hidden, init='uniform', activation='relu', input_dim=input_dim))
     model.add(Dense(output_dim=output_dim, init='uniform', activation='sigmoid'))
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-    model.fit(X_train, y_train, batch_size=10, np_epoch=100)
+    model.fit(X_train, y_train, batch_size=10, epochs=1000)
     y_pred = model.predict(X_test)
     y_pred = (y_pred >= 0.5)
     return y_pred
